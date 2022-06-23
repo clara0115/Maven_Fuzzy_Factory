@@ -2,7 +2,7 @@ USE mavenfuzzyfactory;
 
 #IDENTIFYING TOP WEBSITE PAGES
 SELECT
-	pageview_url,
+    pageview_url,
     COUNT(website_session_id) as sessions
 FROM website_pageviews
 WHERE created_at<'2012-06-09'
@@ -11,7 +11,7 @@ GROUP BY 1;
 #IDENTIFYING TOP ENTRY PAGES
 CREATE TEMPORARY TABLE first_pv
 (SELECT
-	website_session_id,
+    website_session_id,
     MIN(website_pageview_id) as min_pv_id
 FROM website_sessions
 	LEFT JOIN website_pageviews using(website_session_id)
@@ -70,7 +70,7 @@ GROUP BY 1);
 
 CREATE TEMPORARY TABLE t4
 (SELECT
-	t3.website_session_id,
+    t3.website_session_id,
     first_pv_id,
     num_of_vw,
     pageview_url as landing_page
@@ -79,7 +79,7 @@ FROM t3
 		 ON t3.first_pv_id = website_pageviews.website_pageview_id);
 
 SELECT
-	landing_page,
+    landing_page,
     COUNT(website_session_id) as total_sessions,
     COUNT(CASE WHEN num_of_vw = 1 THEN website_session_id ELSE NULL END) as bounced_sessions,
     COUNT(CASE WHEN num_of_vw = 1 THEN website_session_id ELSE NULL END)/COUNT(website_session_id) AS bounced_rate
